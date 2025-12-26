@@ -1,0 +1,75 @@
+# =============================================================================
+# Git Ignore - CI/CD Webhook Server
+# =============================================================================
+
+# ----- Sensitive Configuration -----
+# YAML config files containing sensitive tokens
+config.yml
+*.config.yml
+*.secrets.yml
+secrets/
+
+# Environment files with tokens
+.env
+.env.*
+!.env.example
+
+# ----- Python -----
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+.python-version
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# mypy
+.mypy_cache/
+
+# ----- IDE / Editor -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ----- OS Files -----
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ----- Logs -----
+*.log
+logs/
+
+# ----- Docker -----
+# Ignore docker-compose override files
+docker-compose.override.yml
+
+# ----- Project Specific -----
+# Cloned repository directory for deployments
+text-diff-repo/
+repos/
+
+# Conda environment
+.conda/

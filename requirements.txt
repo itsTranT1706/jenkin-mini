@@ -1,0 +1,15 @@
+# CI/CD Webhook Server Dependencies
+# Python 3.10+ required
+
+# Web Framework
+Flask>=3.0.0
+
+# YAML parsing for deploy.py
+PyYAML>=6.0.1
+
+# Production WSGI Server (choose one)
+gunicorn>=21.2.0        # Linux/macOS - recommended
+# waitress>=2.1.2       # Windows alternative
+
+# Optional: For enhanced logging
+# python-json-logger>=2.0.7

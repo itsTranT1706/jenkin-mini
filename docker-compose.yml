@@ -1,0 +1,77 @@
+# =============================================================================
+# CI/CD Webhook Server - Docker Compose
+# =============================================================================
+# Production-ready configuration with security best practices
+
+services:
+  webhook-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webhook-server
+    restart: unless-stopped
+    
+    # Port mapping
+    ports:
+      - "5000:5000"
+    
+    # Environment variables
+    environment:
+      # REQUIRED: Set your webhook token (use .env file or secrets)
+      - WEBHOOK_TOKEN=${WEBHOOK_TOKEN:?WEBHOOK_TOKEN is required}
+      - SCRIPT_TIMEOUT=${SCRIPT_TIMEOUT:-300}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - HOST=0.0.0.0
+      - PORT=5000
+    
+    # Mount volumes for persistent data (optional)
+    volumes:
+      # Mount config file (read-only for security)
+      - ./config.yml:/app/config.yml:ro
+      # Mount Docker socket if deploy.py needs to build/push images
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+
+# =============================================================================
+# Usage:
+# 
+# 1. Create .env file with your token:
+#    echo "WEBHOOK_TOKEN=your-secure-token-here" > .env
+#
+# 2. Start the server:
+#    docker compose up -d
+#
+# 3. View logs:
+#    docker compose logs -f
+#
+# 4. Stop the server:
+#    docker compose down
+# =============================================================================
