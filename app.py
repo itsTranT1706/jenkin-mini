@@ -299,6 +299,23 @@ def execute_script(script_name: str, args: list[str] | None = None) -> dict[str,
         }
 
 # =============================================================================
+# WEBHOOK ENDPOINTS for testing GitHub integration
+# =============================================================================
+
+@app.route("/webhook-testing", methods=["POST"])
+def github_webhook():
+    print("===== HEADERS =====")
+    print(dict(request.headers))
+
+    print("===== RAW DATA =====")
+    print(request.data)
+
+    print("===== JSON (force) =====")
+    print(request.get_json(silent=True))
+
+    return jsonify({"status": "ok"}), 200
+
+# =============================================================================
 # WEBHOOK ENDPOINTS
 # =============================================================================
 
